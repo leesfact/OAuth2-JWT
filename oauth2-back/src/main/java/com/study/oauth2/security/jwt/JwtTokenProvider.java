@@ -3,11 +3,16 @@ package com.study.oauth2.security.jwt;
 import java.security.Key;
 import java.util.Date;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import com.study.oauth2.security.PrincipalUser;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,7 +29,50 @@ public class JwtTokenProvider {
 		key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
 	}
 	
-	//jwt Token 생성 (회원가입 전용 토큰)
+	
+	public String generateAccessToken(Authentication authentication) {
+		
+		String email = null;
+		
+		if(authentication.getClass() == UserDetails.class) {
+			// PrincipalUser
+			PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal(); //downcasting
+			email = principalUser.getEmail();
+		}else {
+			// OAuth2User
+			OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+			email = oAuth2User.getAttribute("email");
+		}
+		
+		
+		// 권한 설정
+		
+		if(authentication.getAuthorities() == null) {
+			throw new RuntimeException("등록된 권한이 없습니다.");
+		}
+		
+		StringBuilder roles = new StringBuilder();
+		authentication.getAuthorities().forEach(authority -> {
+			roles.append(authority.getAuthority() + ",");
+		});
+		
+		roles.delete(roles.length() - 1, roles.length()); //권한 마지막 쉼표 제거
+		
+		
+		Date tokenExpiresDate = new Date(new Date().getTime() + (1000 * 60 * 60 *24));
+		
+		return Jwts.builder()
+				.setSubject("AccessToken")
+				.claim("email", authentication)
+				.claim("auth", roles)
+				.setExpiration(tokenExpiresDate)
+				.signWith(key,SignatureAlgorithm.HS256)
+				.compact();
+	}
+	
+	
+	
+	// jwt Token 생성 (회원가입 전용 토큰)
 	public String generateOAuth2RegisterToken (Authentication authentication) {
 		
 		// 만료기간
