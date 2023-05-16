@@ -1,5 +1,9 @@
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/book_management
@@ -16,14 +20,13 @@ spring:
             - email
             - profile
           kakao:
-            client-id: <your id>
-            client-secret: <your secret>
+            client-id: 2ac4a56f2e916b3da13effc3a4079b04
+            client-secret: ZkdJ8QDKCnlZKhSPf68IScwXvEZbWB4s
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
             scope:
-              - profile
               - account_email
           naver:
             client-id: _dudyQe0NT5vMiLMVBtU
@@ -49,4 +52,8 @@ mybatis:
   mapper-locations:
     - /mappers/*.xml    
 jwt:
-  secret:  uAdzVUhnjML7pCLQLDapBdNacinrqdRjbaqLD7sMUfe0ILk8KKqk5Xb0WncSuIre   
+  secret:  uAdzVUhnjML7pCLQLDapBdNacinrqdRjbaqLD7sMUfe0ILk8KKqk5Xb0WncSuIre
+  
+  
+file:
+  path: C:\junil\AWS_LKY\workspace\oauth2\oauth2-back/upload/  #경로 맨끝엔 "/" 넣어준다

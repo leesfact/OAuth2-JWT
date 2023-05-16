@@ -32,8 +32,8 @@ const AuthRoute = ({ path, element}) => {
     })
 
 
-    const permitAllPaths = ["/","/notice"];
-    const authenticatedPaths = ["/mypage","/user"];
+    
+    const authenticatedPaths = ["/mypage","/user","/post"];
     const authPath ="/auth"
 
     if(authenticated.isLoading) {
