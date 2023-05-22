@@ -1,5 +1,13 @@
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: lky110408@gmail.com
+    password: fuudttdzlmlgqehu
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
   servlet:
     multipart:
       max-file-size: 100MB
