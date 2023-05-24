@@ -39,7 +39,7 @@ public class AuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2U
 		
 		OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 		
-		System.out.println(oAuth2User);
+		//System.out.println(oAuth2User);
 		
 		String registrationId = userRequest.getClientRegistration().getRegistrationId(); //Google (문자로 구글, 네이버 카카오를 들고옴)
 		

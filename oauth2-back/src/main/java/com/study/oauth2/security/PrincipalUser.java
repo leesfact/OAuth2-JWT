@@ -24,6 +24,7 @@ public class PrincipalUser implements UserDetails {
 	private int userId;
 	private String email;
 	private String password;
+	private String profileImg;
 	private List<Authority> authorities;
 	
 
